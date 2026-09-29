@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NexxLab | Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+.forgot-password {
+    text-align: right;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.forgot-password a {
+    color: #8ab4ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+    /* LOGO */
+.logo {
+    text-align: center;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+
+.logo img {
+    width: 60px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+         body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: white;
+
+    position: relative;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 30, 80, 0.20),
+            rgba(0, 20, 60, 0.30)
+        ),
+        url("{{ url_for('static', filename='login-bg.jpg.jpeg') }}");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+}
+
+
+        /* LAPISAN GELAP / BIRU */
+
+        body::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(37, 99, 235, 0.35),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(124, 58, 237, 0.35),
+                    transparent 35%
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* KOTAK LOGIN */
+
+        .login-box {
+    position: relative;
+    z-index: 2;
+
+    width: 400px;
+    padding: 40px;
+
+    border-radius: 25px;
+
+    background: rgba(5, 25, 60, 0.78);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    text-align: center;
+}
+
+
+        /* LOGO */
+
+        .logo {
+
+            width: 75px;
+
+            height: 75px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border-radius: 20px;
+
+            font-size: 36px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            box-shadow:
+
+                0 10px 30px
+                rgba(37,99,235,0.45);
+        }
+
+
+        /* JUDUL */
+
+        h1 {
+
+            margin: 0;
+
+            font-size: 30px;
+
+            letter-spacing: 1px;
+        }
+
+
+        .subtitle {
+
+            color: #cbd5e1;
+
+            margin-top: 10px;
+
+            margin-bottom: 30px;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+
+        /* INPUT */
+
+        .input-group {
+
+            text-align: left;
+
+            margin-bottom: 18px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #e2e8f0;
+
+            font-size: 14px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            border: 1px solid
+                rgba(255,255,255,0.25);
+
+            background:
+                rgba(15, 23, 42, 0.65);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+
+        input::placeholder {
+
+            color: #94a3b8;
+        }
+
+
+        input:focus {
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(59,130,246,0.2);
+
+            background:
+                rgba(15,23,42,0.85);
+        }
+
+
+        /* TOMBOL */
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+            box-shadow:
+                0 8px 20px
+                rgba(37,99,235,0.25);
+        }
+
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(37,99,235,0.4);
+        }
+
+
+        /* ERROR */
+
+        .error {
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(239,68,68,0.15);
+
+            border:
+                1px solid rgba(239,68,68,0.35);
+
+            color: #fca5a5;
+
+            font-size: 14px;
+        }
+
+
+        /* PEMISAH */
+
+        .divider {
+
+            height: 1px;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            margin: 28px 0 20px;
+        }
+
+
+        /* SELAMAT DATANG */
+
+        .welcome {
+
+            text-align: left;
+
+            margin-bottom: 20px;
+        }
+
+
+        .welcome-title {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        .welcome-text {
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+
+            margin-top: 20px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* RESPONSIVE HP */
+
+        @media (max-width: 600px) {
+
+            .login-box {
+
+                width: 90%;
+
+                padding: 30px 25px;
+            }
+
+            h1 {
+
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login-box">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+        <img src="{{ url_for('static', filename='Politeknik.png') }}" alt="ASTRAtech">
+
+        </div>
+
+
+        <!-- JUDUL -->
+
+        <h1>
+
+            NexxLab
+
+        </h1>
+
+
+        <div class="subtitle">
+
+            Selamat datang di ruang belajar pribadi kamu.
+
+            <br>
+
+            Simpan materi kuliah dengan lebih rapi.
+
+        </div>
+
+
+        <!-- FORM LOGIN -->
+
+        <form method="POST">
+
+
+            <div class="input-group">
+
+                <label>
+
+                    Username
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    name="username"
+
+                    placeholder="Masukkan username"
+
+                    required
+
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+
+                    Password
+
+                </label>
+
+                <input
+
+                    type="password"
+
+                    name="password"
+
+                    placeholder="Masukkan password"
+
+                    required
+
+                >
+
+            </div>
+
+        <!-- LUPA KATA SANDI -->
+
+            <div class="forgot-password">
+
+            <a href="{{ url_for('lupa_password') }}">
+
+            Lupa kata sandi?
+
+            </a>
+
+            </div>
+
+            <button type="submit">
+
+                Log in
+
+            </button>
+
+
+        </form>
+
+
+        <!-- PESAN ERROR -->
+
+        {% if error %}
+
+        <div class="error">
+
+            ⚠️ {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="divider"></div>
+
+
+        <!-- INFORMASI -->
+
+        <div class="welcome">
+
+            <div class="welcome-title">
+
+                 Selamat datang di NexxLab!
+
+            </div>
+
+            <div class="welcome-text">
+
+                Platform pembelajaran pribadi untuk
+                menyimpan materi, tugas, dan catatan
+                perkuliahan kamu.
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            Personal Learning Dashboard
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

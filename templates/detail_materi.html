@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ materi["judul"] }}</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .kategori {
+            color: #4169e1;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .isi {
+            margin-top: 25px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .kembali {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 18px;
+            background: #4169e1;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="kategori">
+            📚 {{ materi["kategori"] }}
+        </div>
+
+        <a href="{{ url_for('detail_materi', id=item['id']) }}" class="recent-title">
+        {{ item["judul"] }}
+        </a>
+
+        <div class="isi">
+            {{ materi["isi"] }}
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="kembali">
+            ← Kembali ke Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

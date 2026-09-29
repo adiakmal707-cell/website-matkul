@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tambah Materi | NexxLabb</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(37, 99, 235, 0.25),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 90%,
+                    rgba(124, 58, 237, 0.25),
+                    transparent 30%
+                ),
+                #070b16;
+
+            color: white;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 750px;
+
+            padding: 35px;
+
+            background: rgba(15, 23, 42, 0.95);
+
+            border: 1px solid #1e293b;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.45);
+        }
+
+
+        .top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 27px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+        }
+
+
+        h1 {
+
+            margin: 0;
+
+            font-size: 25px;
+        }
+
+
+        .subtitle {
+
+            margin: 5px 0 0;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+
+        .back {
+
+            color: #94a3b8;
+
+            text-decoration: none;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            background: #1e293b;
+        }
+
+
+        .back:hover {
+
+            color: white;
+
+            background: #334155;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-top: 20px;
+
+            margin-bottom: 8px;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 12px;
+
+            border: 1px solid #334155;
+
+            background: #0b1120;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px rgba(59,130,246,0.12);
+        }
+
+
+        textarea {
+
+            min-height: 280px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+        }
+
+
+        .hint {
+
+            margin-top: 6px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+
+        .save {
+
+            flex: 1;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .save:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(37,99,235,.25);
+        }
+
+
+        .cancel {
+
+            padding: 14px 20px;
+
+            border-radius: 12px;
+
+            color: #cbd5e1;
+
+            background: #1e293b;
+
+            text-decoration: none;
+
+        }
+
+
+        .cancel:hover {
+
+            background: #334155;
+
+            color: white;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 25px;
+            }
+
+            .top {
+
+                align-items: flex-start;
+            }
+
+            .back {
+
+                font-size: 12px;
+            }
+
+            .buttons {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="top">
+
+            <div class="title">
+
+                <div class="icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <h1>
+                        Tambah Materi
+                    </h1>
+
+                    <p class="subtitle">
+                        Simpan pelajaran kamu di StudySpace
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a href="/dashboard" class="back">
+                ← Kembali
+            </a>
+
+        </div>
+
+
+        <form method="POST">
+
+
+            <!-- JUDUL -->
+
+            <label>
+                📌 Judul Materi
+            </label>
+
+            <input
+                type="text"
+                name="judul"
+                placeholder="Contoh: Tipe Data Python"
+                required
+            >
+
+
+            <!-- KATEGORI -->
+
+            <label>
+                📚 Mata Kuliah
+            </label>
+
+            <select name="kategori" required>
+
+                <option value="">
+                    -- Pilih Mata Kuliah --
+                </option>
+
+                <option value="Algoritma danPemrograman Dasar">
+                    💻 algoritma dan pemrograman dasar
+                </option>
+
+                <option value="Matematika Diskrit">
+                    🧠 Matematika diskrit
+                </option>
+
+                <option value="Basis Data">
+                    🗄️ Basis data
+                </option>
+
+                <option value="Sistem Informasi">
+                    🖥️ Sistem Informasi
+                </option>
+
+                <option value="Organisasi dan Arsitektur Komputer">
+                    💻 Organisasi dan Arsitektur Komputer
+                </option>
+
+                <option value="Tugas">
+                    📝 Tugas
+                </option>
+
+                <option value="Catatan">
+                    📒 Catatan
+                </option>
+
+            </select>
+
+
+            <!-- ISI -->
+
+            <label>
+                📝 Isi Materi
+            </label>
+
+            <textarea
+                name="isi"
+                placeholder="Tuliskan materi kuliah kamu di sini...
+
+Contoh:
+
+Tipe data adalah jenis data yang digunakan
+untuk menentukan nilai yang dapat disimpan
+oleh sebuah variabel.
+
+Contoh:
+integer = 10
+string = 'Halo'
+boolean = True"
+                required
+            ></textarea>
+
+            <div class="hint">
+                💡 Kamu dapat menulis materi, rangkuman, contoh kode,
+                atau catatan kuliah di sini.
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <div class="buttons">
+
+                <a
+                    href="/dashboard"
+                    class="cancel"
+                >
+                    Batal
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save"
+                >
+                    💾 Simpan Materi
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
