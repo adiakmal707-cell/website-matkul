@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "website_matkul_rahasia"
@@ -11,6 +12,28 @@ DATABASE = "database.db"
 
 def buat_database():
     conn = get_db()
+
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nama TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'user'
+    )
+    """)
+
+    # Jadwal Matkul
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS jadwal (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari TEXT NOT NULL,
+    jam_mulai TEXT NOT NULL,
+    jam_selesai TEXT NOT NULL,
+    mata_kuliah TEXT NOT NULL,
+    ruang TEXT NOT NULL
+)
+""")
 
     # Membuat tabel materi
     conn.execute("""
@@ -49,6 +72,50 @@ def buat_database():
             VALUES (?, ?, ?)
         """, (nama, ikon, deskripsi))
 
+    jadwal_data = [
+    ("Senin", "07.30", "09.10",
+     "Pengantar Rekayasa Perangkat Lunak", "LAB CC304"),
+
+    ("Senin", "13.00", "14.40",
+     "Algoritma dan Dasar Pemrograman", "LAB CC304"),
+
+    ("Senin", "14.50", "16.30",
+     "Organisasi dan Arsitektur Komputer (Jam Terstruktur)", "LAB CC304"),
+
+    ("Selasa", "07.30", "12.00",
+     "Organisasi dan Arsitektur Komputer", "LAB CC304"),
+
+    ("Selasa", "13.00", "14.40",
+     "Algoritma dan Dasar Pemrograman (Jam Terstruktur)", "LAB CC304"),
+
+    ("Rabu", "07.30", "09.10",
+     "Sistem Informasi", "LAB CC304"),
+
+    ("Rabu", "09.20", "14.40",
+     "Algoritma dan Dasar Pemrograman", "LAB CC304"),
+
+    ("Rabu", "14.50", "16.30",
+     "Algoritma dan Dasar Pemrograman (Jam Terstruktur)", "LAB CC304"),
+
+    ("Kamis", "07.30", "12.00",
+     "Basis Data", "LAB CC304"),
+
+    ("Kamis", "13.00", "14.40",
+     "Matematika Diskrit", "LAB CC304"),
+
+    ("Jumat", "09.20", "12.00",
+     "Basis Data (Jam Terstruktur)", "LAB CC304"),
+
+    ("Jumat", "13.00", "14.40",
+     "Pancasila", "LAB CC304")
+]
+
+    conn.executemany("""
+    INSERT INTO jadwal
+    (hari, jam_mulai, jam_selesai, mata_kuliah, ruang)
+    VALUES (?, ?, ?, ?, ?)
+    """, jadwal_data)
+
     conn.commit()
     conn.close()
 
@@ -58,24 +125,109 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+@app.route("/jadwal")
+def jadwal():
+    if not session.get("login"):
+        return redirect(url_for("login"))
+
+    hari = request.args.get("hari", "Senin")
+
+    conn = get_db()
+
+    data_jadwal = conn.execute("""
+        SELECT *
+        FROM jadwal
+        WHERE hari = ?
+        ORDER BY jam_mulai
+    """, (hari,)).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "jadwal.html",
+        jadwal=data_jadwal,
+        hari=hari
+    )
+
 @app.route("/", methods=["GET", "POST"])
 def login():
+
     if request.method == "POST":
 
-        username = request.form["username"]
+        username = request.form["username"].strip()
         password = request.form["password"]
 
-        if username == USERNAME and password == PASSWORD:
+        conn = get_db()
+
+        user = conn.execute(
+            "SELECT * FROM users WHERE username = ?",
+            (username,)
+        ).fetchone()
+
+        conn.close()
+
+        if user and check_password_hash(user["password"], password):
+
             session["login"] = True
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            session["nama"] = user["nama"]
+            session["role"] = user["role"]
+
             return redirect(url_for("dashboard"))
 
         else:
+
             return render_template(
                 "login.html",
                 error="Username atau password salah!"
             )
 
     return render_template("login.html")
+
+@app.route("/daftar", methods=["GET", "POST"])
+def daftar():
+    pesan = None
+
+    if request.method == "POST":
+        nama = request.form["nama"].strip()
+        username = request.form["username"].strip()
+        password = request.form["password"]
+        konfirmasi = request.form["konfirmasi"]
+
+        if not nama or not username or not password:
+            pesan = "Semua field wajib diisi."
+            return render_template("daftar.html", pesan=pesan)
+
+        if password != konfirmasi:
+            pesan = "Konfirmasi password tidak cocok."
+            return render_template("daftar.html", pesan=pesan)
+
+        conn = get_db()
+
+        user = conn.execute(
+            "SELECT id FROM users WHERE username = ?",
+            (username,)
+        ).fetchone()
+
+        if user:
+            conn.close()
+            pesan = "Username sudah digunakan."
+            return render_template("daftar.html", pesan=pesan)
+
+        password_hash = generate_password_hash(password)
+
+        conn.execute("""
+            INSERT INTO users (nama, username, password, role)
+            VALUES (?, ?, ?, ?)
+        """, (nama, username, password_hash, "user"))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("login"))
+
+    return render_template("daftar.html", pesan=pesan)
 
 @app.route("/lupa-password", methods=["GET", "POST"])
 def lupa_password():

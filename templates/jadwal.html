@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jadwal Kuliah</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #070b16;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .hari {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .hari a {
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: #1e293b;
+            color: white;
+            text-decoration: none;
+        }
+
+        .hari a:hover {
+            background: #2563eb;
+        }
+
+        .jadwal-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 15px;
+        }
+
+        .jam {
+            color: #60a5fa;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .matkul {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .ruang {
+            color: #94a3b8;
+        }
+
+        .kosong {
+            padding: 25px;
+            background: #0f172a;
+            border-radius: 15px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('dashboard') }}" class="back">
+        ← Kembali ke Dashboard
+    </a>
+
+    <h1>📅 Jadwal Kuliah</h1>
+
+    <p class="subtitle">
+        Semester I • Kelas 1B • Tahun Akademik 2026/2027
+    </p>
+
+    <div class="hari">
+
+        <a href="{{ url_for('jadwal', hari='Senin') }}">
+            Senin
+        </a>
+
+        <a href="{{ url_for('jadwal', hari='Selasa') }}">
+            Selasa
+        </a>
+
+        <a href="{{ url_for('jadwal', hari='Rabu') }}">
+            Rabu
+        </a>
+
+        <a href="{{ url_for('jadwal', hari='Kamis') }}">
+            Kamis
+        </a>
+
+        <a href="{{ url_for('jadwal', hari='Jumat') }}">
+            Jumat
+        </a>
+
+    </div>
+
+    {% if jadwal %}
+
+        {% for item in jadwal %}
+
+        <div class="jadwal-card">
+
+            <div class="jam">
+                {{ item["jam_mulai"] }} - {{ item["jam_selesai"] }}
+            </div>
+
+            <div class="matkul">
+                {{ item["mata_kuliah"] }}
+            </div>
+
+            <div class="ruang">
+                📍 {{ item["ruang"] }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="kosong">
+            Tidak ada jadwal kuliah pada hari ini.
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

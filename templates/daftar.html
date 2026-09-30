@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Daftar Akun</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #070b16;
+            color: white;
+        }
+
+        .register-box {
+            width: 400px;
+            padding: 35px;
+            border-radius: 20px;
+            background: #0f172a;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: white;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pesan {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            text-align: center;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+        }
+
+        .login-link a {
+            color: #8ab4ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-box">
+
+        <h1>📝 Daftar Akun</h1>
+
+        <div class="subtitle">
+            Buat akun baru untuk masuk ke website
+        </div>
+
+        {% if pesan %}
+        <div class="pesan">
+            {{ pesan }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="input-group">
+                <label>Nama</label>
+                <input
+                    type="text"
+                    name="nama"
+                    placeholder="Masukkan nama"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Masukkan username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Masukkan password"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Konfirmasi Password</label>
+                <input
+                    type="password"
+                    name="konfirmasi"
+                    placeholder="Ulangi password"
+                    required
+                >
+            </div>
+
+            <button type="submit">
+                Daftar
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Sudah punya akun?
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
